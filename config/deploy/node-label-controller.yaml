@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-label-controller
+  namespace: node-operators
+  labels:
+    app: node-label-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-label-controller
+  template:
+    metadata:
+      labels:
+        app: node-label-controller
+    spec:
+      containers:
+      - name: node-label-controller
+        image: priyadevdoc/node-label-controller:v1
+        imagePullPolicy: Always
+        command:
+        - "./node-label-controller"
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
